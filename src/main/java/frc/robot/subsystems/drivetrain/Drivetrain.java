@@ -11,6 +11,7 @@ import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.math.proto.Kinematics.ProtobufChassisSpeeds;
 import edu.wpi.first.util.datalog.DataLog;
 import edu.wpi.first.util.datalog.DoubleLogEntry;
 import edu.wpi.first.wpilibj.DataLogManager;
@@ -95,7 +96,7 @@ public class Drivetrain extends SubsystemBase {
         setDesiredStates(moduleStates);
     }
 
-    public void autoDrive(ChassisSpeeds speeds){
+    public void autoDrive(ChassisSpeeds speeds) {
         var moduleStates = DrivetrainConstants.kinematics.toSwerveModuleStates(speeds);
 
         setDesiredStates(moduleStates);
@@ -139,6 +140,10 @@ public class Drivetrain extends SubsystemBase {
         }
 
         SmartDashboard.putNumber("rotation", getRotation2d().getRadians());
+    }
+
+    public ChassisSpeeds getRobotRelativeSpeeds() {
+        return DrivetrainConstants.kinematics.toChassisSpeeds(_modules[0].getState(),_modules[1].getState(),_modules[2].getState(), _modules[3].getState());
     }
 
     public Pose2d getPose() {
