@@ -25,6 +25,11 @@ public class RobotContainer {
     configureBindings();
   }
 
+  public void calibrateSteering() {
+    m_drivetrain.calibrateSteering();
+}
+
+
   private void configureBindings() {
 
   }
@@ -32,6 +37,7 @@ public class RobotContainer {
   private void initChooser() {
      SmartDashboard.putData("Auto Chooser", chooser);
     chooser.addOption("testauto",_autoFactory.createAuto("testauto") );
+   
   }
 
   public Command getAutonomousCommand() {
