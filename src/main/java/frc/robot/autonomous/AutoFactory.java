@@ -5,11 +5,12 @@
 package frc.robot.autonomous;
 
 import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.commands.PathPlannerAuto;
 import com.pathplanner.lib.util.HolonomicPathFollowerConfig;
 import com.pathplanner.lib.util.PIDConstants;
 import com.pathplanner.lib.util.ReplanningConfig;
 
-import frc.robot.constants.DrivetrainConstants;
+import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.drivetrain.Drivetrain;
 
 /** Add your docs here. */
@@ -34,5 +35,8 @@ public class AutoFactory {
         drivetrain // Reference to this subsystem to set requirements
         );
     }
+    public Command createAuto(String pathName){
+    return new PathPlannerAuto(pathName);
+}
     
 }
