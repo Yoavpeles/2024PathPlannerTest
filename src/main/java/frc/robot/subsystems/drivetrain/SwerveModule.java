@@ -38,7 +38,7 @@ public class SwerveModule {
                 _absEncoder.getAbsolutePosition().getValue());
 
         this._driveMotor.getConfigurator()
-                .apply(getTalonConfig(constants.driveGains, SwerveModuleConstants.driveVelocityConversionFactor));
+                .apply(getTalonConfig(constants.driveGains, SwerveModuleConstants.drivePositionConversionFactor));
 
         this._driveMotor.setAverageDepth(4);
         this._driveMotor.setMeasurementPeriod(8);
