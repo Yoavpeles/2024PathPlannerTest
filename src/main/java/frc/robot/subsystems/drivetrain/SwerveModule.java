@@ -2,6 +2,7 @@ package frc.robot.subsystems.drivetrain;
 
 import com.ctre.phoenix6.configs.CANcoderConfiguration;
 import com.ctre.phoenix6.hardware.CANcoder;
+import com.ctre.phoenix6.hardware.TalonFX;
 import com.revrobotics.CANSparkMax.ControlType;
 
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -15,7 +16,7 @@ import frc.robot.motors.DBugSparkMax;
  */
 public class SwerveModule {
 
-    private DBugSparkMax _driveMotor;
+    private TalonFX _driveMotor;
     private DBugSparkMax _steerMotor;
 
     private CANcoder _absEncoder;
@@ -26,12 +27,7 @@ public class SwerveModule {
     public SwerveModule(SwerveModuleConstants constants) {
         this._absEncoder = createCANcoder(constants.canCoderId, constants.cancoderZeroAngle);
 
-        this._driveMotor = DBugSparkMax.create(
-                constants.idDrive,
-                constants.driveGains,
-                SwerveModuleConstants.drivePositionConversionFactor,
-                SwerveModuleConstants.driveVelocityConversionFactor,
-                0);
+        this._driveMotor = new TalonFX(constants.idDrive);
 
         this._steerMotor = DBugSparkMax.create(
                 constants.idSteering,
