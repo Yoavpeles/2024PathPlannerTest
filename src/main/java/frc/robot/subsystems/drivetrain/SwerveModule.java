@@ -41,7 +41,6 @@ public class SwerveModule {
         this._driveMotor.getConfigurator()
                 .apply(getTalonConfig(constants.driveGains, SwerveModuleConstants.drivePositionConversionFactor));
 
-       
         this._targetState = getState();
     }
 
@@ -112,7 +111,8 @@ public class SwerveModule {
         if (state.speedMetersPerSecond == 0)
             this.stop();
         else
-            this._driveMotor.setControl(new VelocityDutyCycle(state.speedMetersPerSecond*SwerveModuleConstants.drivePositionConversionFactor));
+            this._driveMotor.setControl(new VelocityDutyCycle(
+                    state.speedMetersPerSecond * SwerveModuleConstants.drivePositionConversionFactor));
 
         _targetState = desiredState;
 
