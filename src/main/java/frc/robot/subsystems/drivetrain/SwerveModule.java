@@ -95,7 +95,7 @@ public class SwerveModule {
 
     public SwerveModuleState getState() {
         return new SwerveModuleState(
-                this._driveMotor.getVelocity(),
+                this._driveMotor.getVelocity().getValue(),
                 new Rotation2d().rotateBy(Rotation2d.fromDegrees(this._steerMotor.getPosition())));
     }
 
