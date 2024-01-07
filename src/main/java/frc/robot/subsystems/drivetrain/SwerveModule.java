@@ -2,6 +2,7 @@ package frc.robot.subsystems.drivetrain;
 
 import com.ctre.phoenix6.configs.CANcoderConfiguration;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
+import com.ctre.phoenix6.controls.VelocityDutyCycle;
 import com.ctre.phoenix6.hardware.CANcoder;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.revrobotics.CANSparkMax.ControlType;
@@ -40,9 +41,7 @@ public class SwerveModule {
         this._driveMotor.getConfigurator()
                 .apply(getTalonConfig(constants.driveGains, SwerveModuleConstants.drivePositionConversionFactor));
 
-        this._driveMotor.setAverageDepth(4);
-        this._driveMotor.setMeasurementPeriod(8);
-
+       
         this._targetState = getState();
     }
 
@@ -113,7 +112,7 @@ public class SwerveModule {
         if (state.speedMetersPerSecond == 0)
             this.stop();
         else
-            this._driveMotor.setReference(state.speedMetersPerSecond, ControlType.kVelocity);
+            this._driveMotor.setControl(new VelocityDutyCycle(state.speedMetersPerSecond*SwerveModuleConstants.drivePositionConversionFactor));
 
         _targetState = desiredState;
 
@@ -166,6 +165,6 @@ public class SwerveModule {
     }
 
     public SwerveModulePosition getSwerveModulePosition() {
-        return new SwerveModulePosition(_driveMotor.getPosition(), Rotation2d.fromDegrees(getAbsAngle()));
+        return new SwerveModulePosition(_driveMotor.getPosition().getValue(), Rotation2d.fromDegrees(getAbsAngle()));
     }
 }
