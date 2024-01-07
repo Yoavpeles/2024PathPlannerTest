@@ -24,7 +24,7 @@ public class SwerveModule {
     private SwerveModuleState _targetState;
 
     public SwerveModule(SwerveModuleConstants constants) {
-        this._absEncoder = createCANcoder(constants.CANcoderId, constants.CANcoderZeroAngle);
+        this._absEncoder = createCANcoder(constants.canCoderId, constants.cancoderZeroAngle);
 
         this._driveMotor = DBugSparkMax.create(
                 constants.idDrive,
@@ -51,7 +51,7 @@ public class SwerveModule {
         CANcoderConfiguration _absencoderConfig = new CANcoderConfiguration();
         CANcoder CANcoder = new CANcoder(id);
         // Always set CANcoder relative encoder to 0 on boot
-        CANcoder.configSensorInitializationStrategy(SensorInitializationStrategy.BootToZero);
+
         // Configure the offset angle of the magnet
         _absencoderConfig.MagnetSensor.withMagnetOffset(360 - zeroAngle);
         CANcoder.getConfigurator().apply(_absencoderConfig, 30);
