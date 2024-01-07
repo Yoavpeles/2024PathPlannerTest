@@ -1,6 +1,7 @@
 package frc.robot.subsystems.drivetrain;
 
 import com.ctre.phoenix6.configs.CANcoderConfiguration;
+import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.hardware.CANcoder;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.revrobotics.CANSparkMax.ControlType;
@@ -10,6 +11,7 @@ import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import frc.robot.constants.DrivetrainConstants.SwerveModuleConstants;
 import frc.robot.motors.DBugSparkMax;
+import frc.robot.motors.PIDFGains;
 
 /**
  * SwerveModule
@@ -20,7 +22,6 @@ public class SwerveModule {
     private DBugSparkMax _steerMotor;
 
     private CANcoder _absEncoder;
-    
 
     private SwerveModuleState _targetState;
 
@@ -36,14 +37,31 @@ public class SwerveModule {
                 SwerveModuleConstants.steeringVelocityConversionFactor,
                 _absEncoder.getAbsolutePosition().getValue());
 
+        this._driveMotor.getConfigurator()
+                .apply(getTalonConfig(constants.driveGains, SwerveModuleConstants.driveVelocityConversionFactor));
+
         this._driveMotor.setAverageDepth(4);
         this._driveMotor.setMeasurementPeriod(8);
 
         this._targetState = getState();
     }
 
+    private static TalonFXConfiguration getTalonConfig(PIDFGains gains,
+            double conversionFactor) {
+        TalonFXConfiguration config = new TalonFXConfiguration();
+
+        config.Slot0.withKP(gains.kP);
+        config.Slot0.withKI(gains.kI);
+        config.Slot0.withKD(gains.kD);
+        config.Slot0.withKS(gains.kF);// Feedforward
+
+        config.Feedback.withSensorToMechanismRatio(conversionFactor);
+
+        return config;
+    }
+
     private static CANcoder createCANcoder(int id, double zeroAngle) {
-        
+
         CANcoderConfiguration _absencoderConfig = new CANcoderConfiguration();
         CANcoder CANcoder = new CANcoder(id);
         // Always set CANcoder relative encoder to 0 on boot
@@ -51,7 +69,6 @@ public class SwerveModule {
         // Configure the offset angle of the magnet
         _absencoderConfig.MagnetSensor.withMagnetOffset(360 - zeroAngle);
         CANcoder.getConfigurator().apply(_absencoderConfig, 30);
-        
 
         return CANcoder;
     }
