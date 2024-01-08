@@ -48,10 +48,10 @@ public class SwerveModule {
             double conversionFactor) {
         TalonFXConfiguration config = new TalonFXConfiguration();
 
-        config.Slot0.withKP(gains.kP);
-        config.Slot0.withKI(gains.kI);
-        config.Slot0.withKD(gains.kD);
-        config.Slot0.withKS(gains.kF);// Feedforward
+        config.Slot0.withKP(gains.kP)
+                .withKI(gains.kI)
+                .withKD(gains.kD)
+                .withKS(gains.kF);// Feedforward
 
         config.Feedback.withSensorToMechanismRatio(conversionFactor);
 
