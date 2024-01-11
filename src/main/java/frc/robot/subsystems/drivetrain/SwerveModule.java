@@ -3,6 +3,7 @@ package frc.robot.subsystems.drivetrain;
 import com.ctre.phoenix6.configs.CANcoderConfiguration;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.controls.VelocityDutyCycle;
+import com.ctre.phoenix6.controls.VelocityVoltage;
 import com.ctre.phoenix6.hardware.CANcoder;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.revrobotics.CANSparkMax.ControlType;
@@ -51,9 +52,12 @@ public class SwerveModule {
         config.Slot0.withKP(gains.kP)
                 .withKI(gains.kI)
                 .withKD(gains.kD)
-                .withKS(gains.kF);// Feedforward
+                .withKS(gains.kF)// Feedforward
+                .withKV(0.12);//voltage comp
+                
 
         config.Feedback.withSensorToMechanismRatio(conversionFactor);
+        
 
         return config;
     }
@@ -66,7 +70,7 @@ public class SwerveModule {
 
         // Configure the offset angle of the magnet
         _absencoderConfig.MagnetSensor.withMagnetOffset(360 - zeroAngle);
-        CANcoder.getConfigurator().apply(_absencoderConfig, 30);
+        CANcoder.getConfigurator().apply(_absencoderConfig, 0.3);
 
         return CANcoder;
     }
@@ -111,7 +115,7 @@ public class SwerveModule {
         if (state.speedMetersPerSecond == 0)
             this.stop();
         else
-            this._driveMotor.setControl(new VelocityDutyCycle(
+            this._driveMotor.setControl(new VelocityVoltage(
                     state.speedMetersPerSecond * SwerveModuleConstants.drivePositionConversionFactor));
 
         _targetState = desiredState;
